@@ -17,6 +17,9 @@ def transaction_create(request):
 
     return render(request, 'wallet/transaction_form.html', {'form': form})
 
+from django.db.models import Q
+from .models import Transaction, Wallet, TransactionType
+
 def transaction_list(request):
     transactions = Transaction.objects.select_related(
         'wallet',
@@ -24,13 +27,31 @@ def transaction_list(request):
         'transaction_type'
     ).all().order_by('-timestamp')
 
+    # Filtros
+    transaction_type_id = request.GET.get('type')
+    min_amount = request.GET.get('min_amount')
+    search = request.GET.get('search')
+
+    if transaction_type_id:
+        transactions = transactions.filter(transaction_type_id=transaction_type_id)
+
+    if min_amount:
+        transactions = transactions.filter(amount__gte=min_amount)
+
+    if search:
+        transactions = transactions.filter(
+            Q(description__icontains=search)
+        )
+
     wallet = Wallet.objects.first()
     user = wallet.user if wallet else None
+    transaction_types = TransactionType.objects.all()
 
     return render(request, 'wallet/transaction_list.html', {
         'transactions': transactions,
         'wallet': wallet,
-        'user': user
+        'user': user,
+        'transaction_types': transaction_types
     })
 
 def transaction_detail(request, pk):

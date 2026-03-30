@@ -5,6 +5,28 @@
     <title>Transacciones</title>
 </head>
 
+<h2>Filtrar Transacciones</h2>
+
+<form method="get">
+
+    <label>Tipo:</label>
+    <select name="type">
+        <option value="">Todos</option>
+        {% for t in transaction_types %}
+        <option value="{{ t.id }}">{{ t.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Monto mínimo:</label>
+    <input type="number" name="min_amount">
+
+    <label>Buscar descripción:</label>
+    <input type="text" name="search">
+
+    <button type="submit">Filtrar</button>
+
+</form>
+
 <body>
     <h1>Listado de Transacciones</h1>
 
