@@ -1,0 +1,122 @@
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ===== BASE ===== */
+body {
+    background-color: #f4f7fb;
+    color: #0f172a;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: linear-gradient(90deg, #0B2BD6, #1E90FF);
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    margin-left: 15px;
+    font-weight: 600;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+    padding: 30px;
+}
+
+/* ===== CARD ===== */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #0B2BD6, #2563EB);
+    color: white;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-success {
+    background: linear-gradient(90deg, #00C853, #00E676);
+    color: #0f172a;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+}
+
+th, td {
+    padding: 14px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* ===== FORM ===== */
+input, select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+}
+
+/* ===== HERO CARD (tipo fintech) ===== */
+.hero {
+    background: linear-gradient(135deg, #0B2BD6, #00E676);
+    color: white;
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.hero h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}

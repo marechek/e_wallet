@@ -1,65 +1,71 @@
-<!DOCTYPE html>
-<html>
+{% extends 'wallet/base.html' %}
 
-<head>
-    <title>Transacciones</title>
-</head>
+{% block content %}
 
-<body>
-    <h2>Filtrar Transacciones</h2>
+<h1>Transacciones</h1>
 
-    <form method="get">
-
-        <label>Tipo:</label>
-        <select name="type">
-            <option value="">Todos</option>
-            {% for t in transaction_types %}
-            <option value="{{ t.id }}" {% if request.GET.type == t.id|add:"" %}selected{% endif %}>
-                {{ t.name }}
-            </option>
-            {% endfor %}
-        </select>
-
-        <label>Monto mínimo:</label>
-        <input type="number" name="min_amount" value="{{ request.GET.min_amount }}">
-
-        <label>Buscar descripción:</label>
-        <input type="text" name="search" value="{{ request.GET.search }}">
-
-        <button type="submit">Filtrar</button>
-        <a href="{% url 'transaction_list' %}">Limpiar filtros</a>
-
-    </form>
-
-    <h1>Listado de Transacciones</h1>
-
-    <a href="{% url 'transaction_create' %}">[Crear nueva transacción]</a>
+<div class="card">
+    <a class="btn btn-primary" href="{% url 'transaction_create' %}">+ Nueva Transacción</a>
 
     {% if wallet %}
-    <a href="{% url 'wallet_update' wallet.id %}">[Editar Wallet]</a>
+        <a class="btn btn-success" href="{% url 'wallet_update' wallet.id %}">Wallet</a>
     {% endif %}
 
     {% if user %}
-    <a href="{% url 'user_update' user.id %}">[Editar Usuario]</a>
+        <a class="btn btn-success" href="{% url 'user_update' user.id %}">Usuario</a>
     {% endif %}
+</div>
 
-    <ul>
-        {% for tx in transactions %}
-        <li>
-            {{ tx.timestamp }} |
-            {{ tx.transaction_type.name }} |
-            {{ tx.description }} |
-            ${{ tx.amount }}
+<div class="card">
+    <h3>Filtrar</h3>
 
-            <a href="{% url 'transaction_detail' tx.id %}">[Ver]</a>
-            <a href="{% url 'transaction_delete' tx.id %}">[Eliminar]</a>
+    <form method="get">
+        <select name="type">
+            <option value="">Todos</option>
+            {% for t in transaction_types %}
+                <option value="{{ t.id }}" {% if selected_type == t.id|stringformat:"s" %}selected{% endif %}>
+                    {{ t.name }}
+                </option>
+            {% endfor %}
+        </select>
 
-        </li>
-        {% empty %}
-        <li>No hay transacciones</li>
-        {% endfor %}
-    </ul>
+        <input type="number" name="min_amount" placeholder="Monto mínimo" value="{{ request.GET.min_amount }}">
+        <input type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
 
-</body>
+        <button class="btn btn-primary" type="submit">Filtrar</button>
+        <a class="btn btn-danger" href="{% url 'transaction_list' %}">Limpiar</a>
+    </form>
+</div>
 
-</html>
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo</th>
+                <th>Monto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for tx in transactions %}
+            <tr>
+                <td>{{ tx.timestamp }}</td>
+                <td>{{ tx.transaction_type.name }}</td>
+                <td>${{ tx.amount }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{% url 'transaction_detail' tx.id %}">Ver</a>
+                    <a class="btn btn-danger" href="{% url 'transaction_delete' tx.id %}">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay transacciones</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

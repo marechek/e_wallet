@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Wallet</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wallet/styles.css' %}">
+</head>
+<body>
+
+    <div class="navbar">
+        <div><strong>E-Wallet</strong></div>
+        <div>
+            <a href="{% url 'transaction_list' %}">Transacciones</a>
+        </div>
+    </div>
+
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>
