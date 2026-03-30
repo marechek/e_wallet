@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import TransactionForm
+from .models import Transaction
 
 
 def transaction_create(request):
@@ -12,3 +13,7 @@ def transaction_create(request):
         form = TransactionForm()
 
     return render(request, 'wallet/transaction_form.html', {'form': form})
+
+def transaction_list(request):
+    transactions = Transaction.objects.select_related('wallet', 'transaction_type').all().order_by('-timestamp')
+    return render(request, 'wallet/transaction_list.html', {'transactions': transactions})

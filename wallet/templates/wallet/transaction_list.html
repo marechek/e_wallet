@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Transacciones</title>
+</head>
+
+<body>
+    <h1>Listado de Transacciones</h1>
+
+    <a href="{% url 'transaction_create' %}">Crear nueva transacción</a>
+
+    <ul>
+        {% for tx in transactions %}
+        <li>
+            {{ tx.timestamp }} |
+            {{ tx.transaction_type.name }} |
+            ${{ tx.amount }} |
+            Wallet: {{ tx.wallet.id }}
+        </li>
+        {% empty %}
+        <li>No hay transacciones</li>
+        {% endfor %}
+    </ul>
+
+</body>
+
+</html>
