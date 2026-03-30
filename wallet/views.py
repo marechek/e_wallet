@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .forms import TransactionForm
-from .models import Transaction
 from django.http import HttpResponseForbidden
+from .forms import TransactionForm, UserForm, WalletForm
+from .models import Transaction, Wallet
+
 from django.contrib.auth.models import User
-from .models import Wallet
 
 
 def transaction_create(request):
