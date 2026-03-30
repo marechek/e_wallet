@@ -7,4 +7,6 @@ urlpatterns = [
     path('transactions/<int:pk>/', views.transaction_detail, name='transaction_detail'),
     path('transactions/<int:pk>/edit/', views.transaction_update, name='transaction_update'),
     path('transactions/<int:pk>/delete/', views.transaction_delete, name='transaction_delete'),
+    path('users/<int:pk>/edit/', views.user_update, name='user_update'),
+    path('wallets/<int:pk>/edit/', views.wallet_update, name='wallet_update'),
 ]
