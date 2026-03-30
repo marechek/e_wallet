@@ -15,8 +15,11 @@
         <li>
             {{ tx.timestamp }} |
             {{ tx.transaction_type.name }} |
-            ${{ tx.amount }} |
-            Wallet: {{ tx.wallet.id }}
+            ${{ tx.amount }}
+
+            <a href="{% url 'transaction_detail' tx.id %}">Ver</a>
+            <a href="{% url 'transaction_update' tx.id %}">Editar</a>
+            <a href="{% url 'transaction_delete' tx.id %}">Eliminar</a>
         </li>
         {% empty %}
         <li>No hay transacciones</li>
