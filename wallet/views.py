@@ -64,6 +64,8 @@ def transaction_list(request):
         transaction_type__name='retiro'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
+    balance = total_depositos - total_retiros
+
     # ===== CONTEXTO =====
     return render(request, 'wallet/transaction_list.html', {
         'transactions': transactions,
@@ -73,6 +75,7 @@ def transaction_list(request):
         'selected_type': transaction_type_id,
         'total_depositos': total_depositos,
         'total_retiros': total_retiros,
+        'balance': balance,
     })
 
 @login_required
@@ -86,13 +89,7 @@ def transaction_update(request, pk):
 
 @login_required
 def transaction_delete(request, pk):
-    transaction = Transaction.objects.get(pk=pk, wallet__user=request.user)
-
-    if request.method == 'POST':
-        transaction.delete()
-        return redirect('transaction_list')
-
-    return render(request, 'wallet/transaction_confirm_delete.html', {'transaction': transaction})
+    return HttpResponseForbidden("No permitido")
 
 @login_required
 def user_update(request, pk):
