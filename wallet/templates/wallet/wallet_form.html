@@ -11,8 +11,28 @@
         <div class="form-grid">
 
             <div class="form-group">
-                <label>Estado</label>
-                {{ form.is_active }}
+                <label><i class="fa-solid fa-toggle-on"></i> Estado de la Wallet</label>
+
+                <div style="display:flex; align-items:center; gap:10px;">
+
+                    <label class="switch">
+                        {{ form.is_active }}
+                        <span class="slider"></span>
+                    </label>
+
+                    <span id="wallet-status-text">
+                        {% if form.is_active.value %}
+                            🟢 Activa
+                        {% else %}
+                            🔴 Inactiva
+                        {% endif %}
+                    </span>
+
+                </div>
+
+                <small style="color:#64748b;">
+                    Activa o desactiva la billetera
+                </small>
             </div>
 
         </div>

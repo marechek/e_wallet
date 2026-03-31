@@ -35,5 +35,23 @@
         {% endblock %}
     </div>
 
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const checkbox = document.querySelector(".switch input");
+        const statusText = document.getElementById("wallet-status-text");
+
+        if (checkbox && statusText) {
+            checkbox.addEventListener("change", function () {
+                if (checkbox.checked) {
+                    statusText.textContent = "🟢 Activa";
+                } else {
+                    statusText.textContent = "🔴 Inactiva";
+                }
+            });
+        }
+
+    });
+    </script>
 </body>
 </html>
