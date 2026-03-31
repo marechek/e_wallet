@@ -1,35 +1,47 @@
 {% extends 'wallet/base.html' %}
+{% load clp_filters %}
 
 {% block content %}
 
 <div class="card">
-    <h2>Nueva Transacción</h2>
+    <h2><i class="fa-solid fa-plus"></i> Nueva Transacción</h2>
 
     <form method="post">
         {% csrf_token %}
 
-        <div>
-            <label>Wallet</label>
-            {{ form.wallet }}
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-wallet"></i> Wallet</label>
+                {{ form.wallet }}
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-tag"></i> Tipo</label>
+                {{ form.transaction_type }}
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-dollar-sign"></i> Monto</label>
+                {{ form.amount }}
+            </div>
+
+            <div class="form-group full">
+                <label><i class="fa-solid fa-pen"></i> Descripción</label>
+                {{ form.description }}
+            </div>
+
         </div>
 
-        <div>
-            <label>Tipo</label>
-            {{ form.transaction_type }}
+        <div class="form-actions">
+            <a class="btn btn-danger" href="{% url 'transaction_list' %}">
+                Cancelar
+            </a>
+            <button class="btn btn-primary" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar
+            </button>
         </div>
 
-        <div>
-            <label>Monto</label>
-            {{ form.amount }}
-        </div>
-
-        <div>
-            <label>Descripción</label>
-            {{ form.description }}
-        </div>
-
-        <button class="btn btn-primary" type="submit">💾 Guardar</button>
-        <a class="btn btn-danger" href="{% url 'transaction_list' %}">Cancelar</a>
     </form>
 </div>
 

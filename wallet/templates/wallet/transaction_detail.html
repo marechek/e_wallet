@@ -1,16 +1,41 @@
 {% extends 'wallet/base.html' %}
+{% load clp_filters %}
 
 {% block content %}
 
 <div class="card">
-    <h2>Detalle de Transacción</h2>
+    <h2><i class="fa-solid fa-receipt"></i> Detalle de Transacción</h2>
 
-    <p><strong>Tipo:</strong> {{ transaction.transaction_type.name }}</p>
-    <p><strong>Monto:</strong> ${{ transaction.amount }}</p>
-    <p><strong>Descripción:</strong> {{ transaction.description }}</p>
-    <p><strong>Fecha:</strong> {{ transaction.timestamp }}</p>
+    <div class="detail-grid">
 
-    <a class="btn btn-primary" href="{% url 'transaction_list' %}">Volver</a>
+        <div class="detail-item">
+            <strong>Tipo</strong>
+            {{ transaction.transaction_type.name }}
+        </div>
+
+        <div class="detail-item">
+            <strong>Monto</strong>
+            {{ transaction.amount|clp }}
+        </div>
+
+        <div class="detail-item">
+            <strong>Fecha</strong>
+            {{ transaction.timestamp }}
+        </div>
+
+        <div class="detail-item full">
+            <strong>Descripción</strong>
+            {{ transaction.description|default:"Sin descripción" }}
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+        <a class="btn btn-primary" href="{% url 'transaction_list' %}">
+            Volver
+        </a>
+    </div>
+
 </div>
 
 {% endblock %}
