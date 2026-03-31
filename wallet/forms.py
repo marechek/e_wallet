@@ -11,9 +11,13 @@ class TransactionForm(forms.ModelForm):
         fields = ['transaction_type', 'amount', 'description']
 
 class UserForm(forms.ModelForm):
+    username = forms.CharField(disabled=True, label="Usuario")
+    first_name = forms.CharField(disabled=True, label="Nombre")
+    last_name = forms.CharField(disabled=True, label="Apellido")
+
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = ['username', 'first_name', 'last_name', 'email']
 
 class WalletForm(forms.ModelForm):
     class Meta:

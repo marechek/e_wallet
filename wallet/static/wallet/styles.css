@@ -363,3 +363,16 @@ input, select {
     opacity: 0.9;
 }
 
+.error {
+    color: #dc2626;
+    font-size: 12px;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
