@@ -6,13 +6,27 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'wallet/styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
     <div class="navbar">
         <div><strong>E-Wallet</strong></div>
         <div>
-            <a href="{% url 'transaction_list' %}">Transacciones</a>
+            {% if user.is_authenticated %}
+                <span><i class="fa-solid fa-user"></i> {{ user.username }}</span>
+
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">
+                        <i class="fa-solid fa-right-from-bracket"></i> Salir
+                    </button>
+                </form>
+            {% else %}
+                <a class="btn btn-primary" href="{% url 'login' %}">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </a>
+            {% endif %}
         </div>
     </div>
 

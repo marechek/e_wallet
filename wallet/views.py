@@ -7,7 +7,12 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.db.models import Sum
 
+from django.contrib.auth.decorators import login_required
+from .forms import RegisterForm
+from django.contrib.auth import login
 
+
+@login_required
 def transaction_create(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
@@ -23,6 +28,7 @@ from django.db.models import Q, Sum
 from .models import Transaction, Wallet, TransactionType
 
 
+@login_required
 def transaction_list(request):
     transactions = Transaction.objects.select_related(
         'wallet',
@@ -71,13 +77,16 @@ def transaction_list(request):
         'total_retiros': total_retiros,
     })
 
+@login_required
 def transaction_detail(request, pk):
     transaction = Transaction.objects.select_related('wallet', 'transaction_type').get(pk=pk)
     return render(request, 'wallet/transaction_detail.html', {'transaction': transaction})
 
+@login_required
 def transaction_update(request, pk):
     return HttpResponseForbidden("Las transacciones no pueden ser editadas.")
 
+@login_required
 def transaction_delete(request, pk):
     transaction = Transaction.objects.get(pk=pk)
 
@@ -87,6 +96,7 @@ def transaction_delete(request, pk):
 
     return render(request, 'wallet/transaction_confirm_delete.html', {'transaction': transaction})
 
+@login_required
 def user_update(request, pk):
     user = User.objects.get(pk=pk)
 
@@ -100,6 +110,7 @@ def user_update(request, pk):
 
     return render(request, 'wallet/user_form.html', {'form': form})
 
+@login_required
 def wallet_update(request, pk):
     wallet = Wallet.objects.get(pk=pk)
 
@@ -112,4 +123,20 @@ def wallet_update(request, pk):
         form = WalletForm(instance=wallet)
 
     return render(request, 'wallet/wallet_form.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+
+            # crear wallet automáticamente
+            Wallet.objects.create(user=user)
+
+            login(request, user)
+            return redirect('transaction_list')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'wallet/register.html', {'form': form})
 

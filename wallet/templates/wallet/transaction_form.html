@@ -7,9 +7,28 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <button class="btn btn-primary" type="submit">Guardar</button>
+        <div>
+            <label>Wallet</label>
+            {{ form.wallet }}
+        </div>
+
+        <div>
+            <label>Tipo</label>
+            {{ form.transaction_type }}
+        </div>
+
+        <div>
+            <label>Monto</label>
+            {{ form.amount }}
+        </div>
+
+        <div>
+            <label>Descripción</label>
+            {{ form.description }}
+        </div>
+
+        <button class="btn btn-primary" type="submit">💾 Guardar</button>
         <a class="btn btn-danger" href="{% url 'transaction_list' %}">Cancelar</a>
     </form>
 </div>

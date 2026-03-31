@@ -1,0 +1,48 @@
+{% extends 'wallet/base.html' %}
+
+{% block content %}
+
+<div style="display:flex; justify-content:center; align-items:center; min-height:70vh;">
+
+    <div class="card" style="max-width:500px; width:100%;">
+
+        <h2 style="text-align:center;">Crear Cuenta</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div>
+                <label>Usuario</label>
+                {{ form.username }}
+            </div>
+
+            <div>
+                <label>Email</label>
+                {{ form.email }}
+            </div>
+
+            <div>
+                <label>Contraseña</label>
+                {{ form.password1 }}
+            </div>
+
+            <div>
+                <label>Confirmar contraseña</label>
+                {{ form.password2 }}
+            </div>
+
+            <button class="btn btn-success" style="width:100%;" type="submit">
+                Registrarse
+            </button>
+        </form>
+
+        <p style="margin-top:15px; text-align:center;">
+            ¿Ya tienes cuenta?
+            <a href="{% url 'login' %}">Inicia sesión</a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
