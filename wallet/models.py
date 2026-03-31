@@ -58,3 +58,11 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.transaction_type.name} - {self.amount}"
+
+    def get_full_name_display(self):
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_name}"
+        return self.username
+
+
+    User.add_to_class("get_full_name_display", get_full_name_display)

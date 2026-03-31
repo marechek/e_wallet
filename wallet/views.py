@@ -131,9 +131,6 @@ def register(request):
         if form.is_valid():
             user = form.save()
 
-            # crear wallet automáticamente
-            Wallet.objects.create(user=user)
-
             login(request, user)
             return redirect('transaction_list')
     else:

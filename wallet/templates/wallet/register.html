@@ -10,7 +10,15 @@
 
         <form method="post">
             {% csrf_token %}
+            <div class="form-group">
+                <label>Nombre</label>
+                {{ form.first_name }}
+            </div>
 
+            <div class="form-group">
+                <label>Apellido</label>
+                {{ form.last_name }}
+            </div>
             <div>
                 <label>Usuario</label>
                 {{ form.username }}

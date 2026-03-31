@@ -14,7 +14,8 @@
         <div><strong>E-Wallet</strong></div>
         <div>
             {% if user.is_authenticated %}
-                <span><i class="fa-solid fa-user"></i> {{ request.user.username }}</span>
+                <span><i class="fa-solid fa-user"></i> 
+                    {{ request.user.get_full_name_display }}</span>
 
                 <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
