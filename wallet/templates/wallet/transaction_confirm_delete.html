@@ -1,23 +1,18 @@
-<!DOCTYPE html>
-<html>
+{% extends 'wallet/base.html' %}
 
-<head>
-    <title>Eliminar Transacción</title>
-</head>
+{% block content %}
 
-<body>
+<div class="card">
+    <h2>Eliminar Transacción</h2>
 
-    <h1>¿Eliminar transacción?</h1>
-
-    <p>{{ transaction }}</p>
+    <p>¿Estás seguro que deseas eliminar esta transacción?</p>
+    <p><strong>{{ transaction }}</strong></p>
 
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Confirmar</button>
+        <button class="btn btn-danger" type="submit">Eliminar</button>
+        <a class="btn btn-primary" href="{% url 'transaction_list' %}">Cancelar</a>
     </form>
+</div>
 
-    <a href="{% url 'transaction_list' %}">Cancelar</a>
-
-</body>
-
-</html>
+{% endblock %}

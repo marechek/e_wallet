@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html>
+{% extends 'wallet/base.html' %}
 
-<head>
-    <title>Editar Wallet</title>
-</head>
+{% block content %}
 
-<body>
-
-    <h1>Editar Wallet</h1>
+<div class="card">
+    <h2>Editar Wallet</h2>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Guardar</button>
+
+        <button class="btn btn-success" type="submit">Guardar</button>
+        <a class="btn btn-danger" href="{% url 'transaction_list' %}">Cancelar</a>
     </form>
+</div>
 
-</body>
-
-</html>
+{% endblock %}
