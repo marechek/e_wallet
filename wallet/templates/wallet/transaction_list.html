@@ -28,34 +28,55 @@
 </div>
 
 <div class="card">
-    <h3>Filtrar</h3>
+    <h3 style="margin-bottom:15px;">
+        <i class="fa-solid fa-filter"></i> Filtrar Transacciones
+    </h3>
 
-    <form method="get">
-        <select name="type">
-            <option value="">Todos</option>
-            {% for t in transaction_types %}
-                <option value="{{ t.id }}" {% if selected_type == t.id|stringformat:"s" %}selected{% endif %}>
-                    {{ t.name }}
-                </option>
-            {% endfor %}
-        </select>
+    <form method="get" class="filter-grid">
 
-        <input type="number" name="min_amount" placeholder="Monto mínimo" value="{{ request.GET.min_amount }}">
-        <input type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
+        <div>
+            <label>Tipo</label>
+            <select name="type">
+                <option value="">Todos</option>
+                {% for t in transaction_types %}
+                    <option value="{{ t.id }}" {% if selected_type == t.id|stringformat:"s" %}selected{% endif %}>
+                        {{ t.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
 
-        <button class="btn btn-primary" type="submit">Filtrar</button>
-        <a class="btn btn-danger" href="{% url 'transaction_list' %}">Limpiar</a>
+        <div>
+            <label>Monto mínimo</label>
+            <input type="number" name="min_amount" value="{{ request.GET.min_amount }}">
+        </div>
+
+        <div>
+            <label>Buscar</label>
+            <input type="text" name="search" placeholder="Descripción o tipo..." value="{{ request.GET.search }}">
+        </div>
+
+        <div class="filter-actions">
+            <button class="btn btn-primary" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i> Filtrar
+            </button>
+
+            <a class="btn btn-danger" href="{% url 'transaction_list' %}">
+                Limpiar
+            </a>
+        </div>
+
     </form>
 </div>
 
 <div class="card">
-    <table>
+    <table class="tx-table">
         <thead>
             <tr>
                 <th>Fecha</th>
                 <th>Tipo</th>
                 <th>Monto</th>
-                <th>Acciones</th>
+                <th style="text-align:right;">Acciones</th>
             </tr>
         </thead>
 
@@ -63,11 +84,25 @@
             {% for tx in transactions %}
             <tr>
                 <td>{{ tx.timestamp }}</td>
-                <td>{{ tx.transaction_type.name }}</td>
-                <td>{{ tx.amount|clp }}</td>
+
                 <td>
-                    <a class="btn btn-primary" href="{% url 'transaction_detail' tx.id %}">Ver</a>
-                    <a class="btn btn-danger" href="{% url 'transaction_delete' tx.id %}">Eliminar</a>
+                    {% if tx.transaction_type.name == "deposito" %}
+                        <span class="badge badge-success">Depósito</span>
+                    {% else %}
+                        <span class="badge badge-danger">Retiro</span>
+                    {% endif %}
+                </td>
+
+                <td><strong>{{ tx.amount|clp }}</strong></td>
+
+                <td class="actions">
+                    <a class="btn btn-primary btn-sm" href="{% url 'transaction_detail' tx.id %}">
+                        Ver
+                    </a>
+
+                    <a class="btn btn-danger btn-sm" href="{% url 'transaction_delete' tx.id %}">
+                        Eliminar
+                    </a>
                 </td>
             </tr>
             {% empty %}
