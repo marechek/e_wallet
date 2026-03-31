@@ -288,3 +288,14 @@ input, select {
 .switch input:checked + .slider::before {
     transform: translateX(24px);
 }
+
+.hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 15px;
+}
+
+.hero-stats div {
+    font-size: 14px;
+}
+

@@ -17,8 +17,10 @@ def transaction_create(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('transaction_list')  # lo crearemos después
+            transaction = form.save(commit=False)
+            transaction.wallet = request.user.wallet
+            transaction.save()
+            return redirect('transaction_list')
     else:
         form = TransactionForm()
 
@@ -32,9 +34,8 @@ from .models import Transaction, Wallet, TransactionType
 def transaction_list(request):
     transactions = Transaction.objects.select_related(
         'wallet',
-        'wallet__user',
         'transaction_type'
-    ).all().order_by('-timestamp')
+    ).filter(wallet__user=request.user).order_by('-timestamp')
 
     # ===== FILTROS =====
     transaction_type_id = request.GET.get('type')
@@ -53,7 +54,7 @@ def transaction_list(request):
             Q(transaction_type__name__icontains=search)
         )
 
-    # ===== DASHBOARD (AQUÍ VA LO NUEVO) =====
+    # ===== DASHBOARD =====
     total_depositos = Transaction.objects.filter(
         transaction_type__name='deposito'
     ).aggregate(total=Sum('amount'))['total'] or 0
@@ -62,8 +63,8 @@ def transaction_list(request):
         transaction_type__name='retiro'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
-    wallet = Wallet.objects.first()
-    user = wallet.user if wallet else None
+    wallet, _ = Wallet.objects.get_or_create(user=request.user)
+    user = request.user
     transaction_types = TransactionType.objects.all()
 
     # ===== CONTEXTO =====
@@ -79,7 +80,7 @@ def transaction_list(request):
 
 @login_required
 def transaction_detail(request, pk):
-    transaction = Transaction.objects.select_related('wallet', 'transaction_type').get(pk=pk)
+    transaction = Transaction.objects.select_related('wallet', 'transaction_type').get(pk=pk, wallet__user=request.user)
     return render(request, 'wallet/transaction_detail.html', {'transaction': transaction})
 
 @login_required
@@ -88,7 +89,7 @@ def transaction_update(request, pk):
 
 @login_required
 def transaction_delete(request, pk):
-    transaction = Transaction.objects.get(pk=pk)
+    transaction = Transaction.objects.get(pk=pk, wallet__user=request.user)
 
     if request.method == 'POST':
         transaction.delete()

@@ -22,8 +22,17 @@
     <h1>{{ wallet.balance|clp }}</h1>
 
     <div>
-        💰 Depósitos: {{ total_depositos|clp }} |
-        💸 Retiros: {{ total_retiros|clp }}
+        <div class="hero-stats">
+            <div>
+                💰 <strong>Depósitos</strong><br>
+                {{ total_depositos|clp }}
+            </div>
+
+            <div>
+                💸 <strong>Retiros</strong><br>
+                {{ total_retiros|clp }}
+            </div>
+        </div>
     </div>
 </div>
 
@@ -107,7 +116,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">No hay transacciones</td>
+                <td colspan="4" style="text-align:center; padding:20px;">
+                    <i class="fa-solid fa-inbox"></i><br><br>
+                    No tienes transacciones aún<br>
+                    <a class="btn btn-primary" href="{% url 'transaction_create' %}">
+                        Crear primera transacción
+                    </a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

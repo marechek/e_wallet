@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserCreationForm
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ['wallet', 'transaction_type', 'amount', 'description']
+        fields = ['transaction_type', 'amount', 'description']
 
 class UserForm(forms.ModelForm):
     class Meta:
