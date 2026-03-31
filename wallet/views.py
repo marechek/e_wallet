@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from .forms import TransactionForm, UserForm, WalletForm
-from .models import Transaction, Wallet
+from .models import Transaction, Wallet, TransactionType
 
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.db.models import Sum
 
 
 def transaction_create(request):
@@ -17,8 +19,9 @@ def transaction_create(request):
 
     return render(request, 'wallet/transaction_form.html', {'form': form})
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from .models import Transaction, Wallet, TransactionType
+
 
 def transaction_list(request):
     transactions = Transaction.objects.select_related(
@@ -27,7 +30,7 @@ def transaction_list(request):
         'transaction_type'
     ).all().order_by('-timestamp')
 
-    # Filtros
+    # ===== FILTROS =====
     transaction_type_id = request.GET.get('type')
     min_amount = request.GET.get('min_amount')
     search = request.GET.get('search')
@@ -40,18 +43,32 @@ def transaction_list(request):
 
     if search:
         transactions = transactions.filter(
-            Q(description__icontains=search)
+            Q(description__icontains=search) |
+            Q(transaction_type__name__icontains=search)
         )
+
+    # ===== DASHBOARD (AQUÍ VA LO NUEVO) =====
+    total_depositos = Transaction.objects.filter(
+        transaction_type__name='deposito'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_retiros = Transaction.objects.filter(
+        transaction_type__name='retiro'
+    ).aggregate(total=Sum('amount'))['total'] or 0
 
     wallet = Wallet.objects.first()
     user = wallet.user if wallet else None
     transaction_types = TransactionType.objects.all()
 
+    # ===== CONTEXTO =====
     return render(request, 'wallet/transaction_list.html', {
         'transactions': transactions,
         'wallet': wallet,
         'user': user,
-        'transaction_types': transaction_types
+        'transaction_types': transaction_types,
+        'selected_type': transaction_type_id,
+        'total_depositos': total_depositos,
+        'total_retiros': total_retiros,
     })
 
 def transaction_detail(request, pk):

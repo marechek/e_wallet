@@ -1,4 +1,5 @@
 {% extends 'wallet/base.html' %}
+{% load clp_filters %}
 
 {% block content %}
 
@@ -14,6 +15,16 @@
     {% if user %}
         <a class="btn btn-success" href="{% url 'user_update' user.id %}">Usuario</a>
     {% endif %}
+</div>
+
+<div class="hero">
+    <h2>Saldo actual</h2>
+    <h1>{{ wallet.balance|clp }}</h1>
+
+    <div>
+        💰 Depósitos: {{ total_depositos|clp }} |
+        💸 Retiros: {{ total_retiros|clp }}
+    </div>
 </div>
 
 <div class="card">
@@ -53,7 +64,7 @@
             <tr>
                 <td>{{ tx.timestamp }}</td>
                 <td>{{ tx.transaction_type.name }}</td>
-                <td>${{ tx.amount }}</td>
+                <td>{{ tx.amount|clp }}</td>
                 <td>
                     <a class="btn btn-primary" href="{% url 'transaction_detail' tx.id %}">Ver</a>
                     <a class="btn btn-danger" href="{% url 'transaction_delete' tx.id %}">Eliminar</a>
