@@ -4,8 +4,7 @@ from .forms import TransactionForm, UserForm, WalletForm
 from .models import Transaction, Wallet, TransactionType
 
 from django.contrib.auth.models import User
-from django.db.models import Q
-from django.db.models import Sum
+from django.db.models import Q, Sum
 
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
@@ -26,16 +25,18 @@ def transaction_create(request):
 
     return render(request, 'wallet/transaction_form.html', {'form': form})
 
-from django.db.models import Q, Sum
-from .models import Transaction, Wallet, TransactionType
-
 
 @login_required
 def transaction_list(request):
+
+    # ===== WALLET =====
+    wallet, _ = Wallet.objects.get_or_create(user=request.user)
+
+    # ===== BASE QUERY (SIEMPRE FILTRADA POR USUARIO) =====
     transactions = Transaction.objects.select_related(
         'wallet',
         'transaction_type'
-    ).filter(wallet__user=request.user).order_by('-timestamp')
+    ).filter(wallet=wallet).order_by('-timestamp')
 
     # ===== FILTROS =====
     transaction_type_id = request.GET.get('type')
@@ -54,25 +55,21 @@ def transaction_list(request):
             Q(transaction_type__name__icontains=search)
         )
 
-    # ===== DASHBOARD =====
-    total_depositos = Transaction.objects.filter(
+    # ===== DASHBOARD (CONSISTENTE CON FILTROS) =====
+    total_depositos = transactions.filter(
         transaction_type__name='deposito'
     ).aggregate(total=Sum('amount'))['total'] or 0
 
-    total_retiros = Transaction.objects.filter(
+    total_retiros = transactions.filter(
         transaction_type__name='retiro'
     ).aggregate(total=Sum('amount'))['total'] or 0
-
-    wallet, _ = Wallet.objects.get_or_create(user=request.user)
-    user = request.user
-    transaction_types = TransactionType.objects.all()
 
     # ===== CONTEXTO =====
     return render(request, 'wallet/transaction_list.html', {
         'transactions': transactions,
         'wallet': wallet,
-        'user': user,
-        'transaction_types': transaction_types,
+        'user': request.user,
+        'transaction_types': TransactionType.objects.all(),
         'selected_type': transaction_type_id,
         'total_depositos': total_depositos,
         'total_retiros': total_retiros,
