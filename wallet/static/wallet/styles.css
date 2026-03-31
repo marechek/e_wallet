@@ -117,6 +117,7 @@ input, select {
     padding: 25px;
     border-radius: 16px;
     margin-bottom: 20px;
+    animation: fadeIn 0.6s ease;
 }
 
 .hero h2 {
@@ -376,3 +377,50 @@ input, select {
     margin-bottom: 15px;
 }
 
+.card {
+    transition: all 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.95;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border: 1px solid #2563eb;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
