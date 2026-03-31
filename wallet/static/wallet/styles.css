@@ -299,3 +299,67 @@ input, select {
     font-size: 14px;
 }
 
+/* ===== EMPTY STATE ===== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.empty-icon {
+    font-size: 40px;
+    color: #2563eb;
+    margin-bottom: 15px;
+}
+
+.empty-state h3 {
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.empty-state p {
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+/* ===== LOGIN HERO ===== */
+.login-hero {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+
+    /* Imagen + gradiente fusionados */
+    background:
+        linear-gradient(135deg, rgba(11, 41, 214, 0.735) , rgba(0,230,118,0.8)),
+        url("/static/wallet/img/e_wallet_login.png");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+}
+
+/* Contenido encima */
+.login-hero-content {
+    text-align: center;
+    max-width: 280px;
+    z-index: 1;
+}
+
+.login-hero-content h2 {
+    margin-bottom: 10px;
+    font-size: 22px;
+}
+
+.login-hero-content p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+

@@ -1,4 +1,5 @@
 {% extends 'wallet/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -6,9 +7,16 @@
 
     <div class="card" style="display:flex; max-width:900px; width:100%; overflow:hidden;">
 
-        <!-- Imagen -->
-        <div style="flex:1; background:linear-gradient(135deg,#0B2BD6,#00E676); display:flex; align-items:center; justify-content:center;">
-            <img src="https://cdn-icons-png.flaticon.com/512/891/891419.png" style="width:120px;">
+        <div class="login-hero">
+
+            <div class="login-hero-content">
+                <h2>Tu billetera digital</h2>
+
+                <p>
+                    Administra tu dinero de forma segura, rápida y moderna.
+                </p>
+            </div>
+
         </div>
 
         <!-- Formulario -->
