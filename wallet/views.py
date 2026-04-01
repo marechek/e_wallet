@@ -2,18 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from .forms import TransactionForm, UserForm, WalletForm
 from .models import Transaction, Wallet, TransactionType
-
 from django.contrib.auth.models import User
 from django.db.models import Q, Sum
-
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib.auth import login
 from django.core.exceptions import ValidationError
-
-
-from django.core.exceptions import ValidationError
-from .services import validate_wallet_active, WalletInactiveError
+from .services import WalletInactiveError
 from .decorators import wallet_required_active
 
 @login_required
