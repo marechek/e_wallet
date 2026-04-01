@@ -20,7 +20,16 @@
 <div class="hero">
     <h2>Saldo actual</h2>
     <h1>{{ balance|clp }}</h1>
-
+    <div class="wallet-status {% if not wallet.is_active %}inactive{% else %}active{% endif %}">
+        {% if wallet.is_active %}
+            🟢 Wallet Activa
+        {% else %}
+            🔴 Wallet Desactivada
+            <div class="wallet-warning">
+                ⚠️ No puedes realizar transacciones hasta reactivar tu billetera.
+            </div>
+        {% endif %}
+    </div>
     <div>
         <div class="hero-stats">
             <div>

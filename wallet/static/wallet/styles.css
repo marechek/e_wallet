@@ -486,3 +486,23 @@ input:focus, select:focus {
     }
 }
 
+.wallet-status {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.wallet-status.active {
+    color: #22c55e; /* verde */
+}
+
+.wallet-status.inactive {
+    color: #ef4444; /* rojo */
+}
+
+.wallet-warning {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #f59e0b;
+}
+
