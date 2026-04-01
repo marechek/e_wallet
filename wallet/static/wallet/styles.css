@@ -457,6 +457,10 @@ input:focus, select:focus {
     z-index: 9999;
 }
 
+.modal-overlay.active {
+    display: flex;
+}
+
 /* ===== MODAL CARD ===== */
 .modal-card {
     background: white;

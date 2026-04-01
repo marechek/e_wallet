@@ -12,20 +12,49 @@ from django.contrib.auth import login
 from django.core.exceptions import ValidationError
 
 
+from django.core.exceptions import ValidationError
+from .services import validate_wallet_active, WalletInactiveError
+from .decorators import wallet_required_active
+
 @login_required
+@wallet_required_active
 def transaction_create(request):
+    wallet, _ = Wallet.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         form = TransactionForm(request.POST)
+
         if form.is_valid():
             transaction = form.save(commit=False)
-            transaction.wallet = request.user.wallet
+            transaction.wallet = wallet
 
             try:
+                from decimal import Decimal
+                from django.db.models import Sum
+                from django.db.models.functions import Coalesce
+
+                total_depositos = Transaction.objects.filter(
+                    wallet=wallet,
+                    transaction_type__name='deposito'
+                ).aggregate(total=Coalesce(Sum('amount'), Decimal('0.00')))['total']
+
+                total_retiros = Transaction.objects.filter(
+                    wallet=wallet,
+                    transaction_type__name='retiro'
+                ).aggregate(total=Coalesce(Sum('amount'), Decimal('0.00')))['total']
+
+                balance = total_depositos - total_retiros
+
+                if transaction.transaction_type.name.lower() == 'retiro' and transaction.amount > balance:
+                    raise ValidationError("Saldo insuficiente para realizar el retiro.")
+
                 transaction.save()
                 return redirect('transaction_list')
 
             except ValidationError as e:
-                form.add_error(None, e)
+                for error in e.messages:
+                    form.add_error(None, error)
+
     else:
         form = TransactionForm()
 
@@ -100,7 +129,8 @@ def transaction_delete(request, pk):
     return HttpResponseForbidden("No permitido")
 
 @login_required
-def transaction_reverse(request, pk):
+@wallet_required_active
+def transaction_reverse(request):
     original = Transaction.objects.get(pk=pk, wallet__user=request.user)
 
     reverse_type = TransactionType.objects.get(
