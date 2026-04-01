@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
+from decimal import Decimal
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+
 
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='wallet')
@@ -28,10 +32,6 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
     description = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-
-    from django.db.models import Sum
-    from django.db.models.functions import Coalesce
-    from decimal import Decimal
 
     def clean(self):
         if self.amount <= 0:

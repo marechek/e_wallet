@@ -9,6 +9,7 @@ from django.db.models import Q, Sum
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.contrib.auth import login
+from django.core.exceptions import ValidationError
 
 
 @login_required
@@ -18,8 +19,13 @@ def transaction_create(request):
         if form.is_valid():
             transaction = form.save(commit=False)
             transaction.wallet = request.user.wallet
-            transaction.save()
-            return redirect('transaction_list')
+
+            try:
+                transaction.save()
+                return redirect('transaction_list')
+
+            except ValidationError as e:
+                form.add_error(None, e)
     else:
         form = TransactionForm()
 
