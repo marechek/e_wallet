@@ -31,10 +31,14 @@ class Transaction(models.Model):
 
     from django.db.models import Sum
     from django.db.models.functions import Coalesce
+    from decimal import Decimal
 
     def clean(self):
         if self.amount <= 0:
             raise ValidationError("El monto debe ser mayor a cero.")
+
+        if not self.wallet_id:
+            return
 
         if self.transaction_type.name.lower() == 'retiro':
             from .models import Transaction
@@ -42,12 +46,16 @@ class Transaction(models.Model):
             total_depositos = Transaction.objects.filter(
                 wallet=self.wallet,
                 transaction_type__name='deposito'
-            ).aggregate(total=Coalesce(Sum('amount'), 0))['total']
+            ).aggregate(
+                total=Coalesce(Sum('amount'), Decimal('0.00'))
+            )['total']
 
             total_retiros = Transaction.objects.filter(
                 wallet=self.wallet,
                 transaction_type__name='retiro'
-            ).aggregate(total=Coalesce(Sum('amount'), 0))['total']
+            ).aggregate(
+                total=Coalesce(Sum('amount'), Decimal('0.00'))
+            )['total']
 
             balance_actual = total_depositos - total_retiros
 
@@ -67,4 +75,4 @@ class Transaction(models.Model):
         return self.username
 
 
-User.add_to_class("get_full_name_display", get_full_name_display)
+    User.add_to_class("get_full_name_display", get_full_name_display)
