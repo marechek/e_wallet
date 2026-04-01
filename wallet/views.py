@@ -33,10 +33,23 @@ def transaction_list(request):
     wallet, _ = Wallet.objects.get_or_create(user=request.user)
 
     # ===== BASE QUERY (SIEMPRE FILTRADA POR USUARIO) =====
-    transactions = Transaction.objects.select_related(
+    base_qs = Transaction.objects.select_related(
         'wallet',
         'transaction_type'
-    ).filter(wallet=wallet).order_by('-timestamp')
+    ).filter(wallet=wallet)
+
+    transactions = base_qs.order_by('-timestamp')
+
+    # ===== DASHBOARD (SIEMPRE SOBRE BASE) =====
+    total_depositos = base_qs.filter(
+        transaction_type__name='deposito'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_retiros = base_qs.filter(
+        transaction_type__name='retiro'
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    balance = total_depositos - total_retiros
 
     # ===== FILTROS =====
     transaction_type_id = request.GET.get('type')
@@ -54,17 +67,6 @@ def transaction_list(request):
             Q(description__icontains=search) |
             Q(transaction_type__name__icontains=search)
         )
-
-    # ===== DASHBOARD (CONSISTENTE CON FILTROS) =====
-    total_depositos = transactions.filter(
-        transaction_type__name='deposito'
-    ).aggregate(total=Sum('amount'))['total'] or 0
-
-    total_retiros = transactions.filter(
-        transaction_type__name='retiro'
-    ).aggregate(total=Sum('amount'))['total'] or 0
-
-    balance = total_depositos - total_retiros
 
     # ===== CONTEXTO =====
     return render(request, 'wallet/transaction_list.html', {

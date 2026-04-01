@@ -29,31 +29,33 @@ class Transaction(models.Model):
     description = models.TextField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    from django.db.models import Sum
+    from django.db.models.functions import Coalesce
+
     def clean(self):
-        # Validación: no permitir montos negativos o cero
         if self.amount <= 0:
             raise ValidationError("El monto debe ser mayor a cero.")
 
-        # Validación: evitar saldo negativo en retiros
         if self.transaction_type.name.lower() == 'retiro':
-            if self.wallet.balance < self.amount:
+            from .models import Transaction
+
+            total_depositos = Transaction.objects.filter(
+                wallet=self.wallet,
+                transaction_type__name='deposito'
+            ).aggregate(total=Coalesce(Sum('amount'), 0))['total']
+
+            total_retiros = Transaction.objects.filter(
+                wallet=self.wallet,
+                transaction_type__name='retiro'
+            ).aggregate(total=Coalesce(Sum('amount'), 0))['total']
+
+            balance_actual = total_depositos - total_retiros
+
+            if self.amount > balance_actual:
                 raise ValidationError("Saldo insuficiente para realizar el retiro.")
 
     def save(self, *args, **kwargs):
-        # Ejecuta validaciones
         self.clean()
-
-        # Actualiza balance según tipo de transacción
-        if self.transaction_type.name.lower() == 'deposito':
-            self.wallet.balance += self.amount
-
-        elif self.transaction_type.name.lower() == 'retiro':
-            self.wallet.balance -= self.amount
-
-        # Guarda wallet actualizado
-        self.wallet.save()
-
-        # Guarda transacción
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -65,4 +67,4 @@ class Transaction(models.Model):
         return self.username
 
 
-    User.add_to_class("get_full_name_display", get_full_name_display)
+User.add_to_class("get_full_name_display", get_full_name_display)
