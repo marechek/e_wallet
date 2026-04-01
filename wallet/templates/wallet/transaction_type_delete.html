@@ -1,0 +1,8 @@
+<h2>Confirmar eliminación</h2>
+
+<p>¿Seguro que deseas eliminar {{ type.name }}?</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Eliminar</button>
+</form>

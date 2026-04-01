@@ -147,6 +147,50 @@ def transaction_reverse(request):
     return redirect('transaction_list')
 
 @login_required
+def transaction_type_list(request):
+    types = TransactionType.objects.all()
+    return render(request, 'wallet/transaction_type_list.html', {'types': types})
+
+
+@login_required
+def transaction_type_create(request):
+    if request.method == 'POST':
+        form = TransactionTypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('transaction_type_list')
+    else:
+        form = TransactionTypeForm()
+
+    return render(request, 'wallet/transaction_type_form.html', {'form': form})
+
+
+@login_required
+def transaction_type_update(request, pk):
+    type_obj = TransactionType.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        form = TransactionTypeForm(request.POST, instance=type_obj)
+        if form.is_valid():
+            form.save()
+            return redirect('transaction_type_list')
+    else:
+        form = TransactionTypeForm(instance=type_obj)
+
+    return render(request, 'wallet/transaction_type_form.html', {'form': form})
+
+
+@login_required
+def transaction_type_delete(request, pk):
+    type_obj = TransactionType.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        type_obj.delete()
+        return redirect('transaction_type_list')
+
+    return render(request, 'wallet/transaction_type_confirm_delete.html', {'type': type_obj})
+
+@login_required
 def user_update(request, pk):
     user = User.objects.get(pk=pk)
 

@@ -54,6 +54,11 @@ class TransactionForm(forms.ModelForm):
 
         return cleaned_data
 
+class TransactionTypeForm(forms.ModelForm):
+    class Meta:
+        model = TransactionType
+        fields = ['name', 'description']
+
 class UserForm(forms.ModelForm):
     username = forms.CharField(disabled=True, label="Usuario")
     first_name = forms.CharField(disabled=True, label="Nombre")
