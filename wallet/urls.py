@@ -10,4 +10,5 @@ urlpatterns = [
     path('users/<int:pk>/edit/', views.user_update, name='user_update'),
     path('wallets/<int:pk>/edit/', views.wallet_update, name='wallet_update'),
     path('register/', views.register, name='register'),
+    path('transactions/<int:pk>/reverse/', views.transaction_reverse, name='transaction_reverse'),
 ]

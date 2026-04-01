@@ -92,6 +92,23 @@ def transaction_delete(request, pk):
     return HttpResponseForbidden("No permitido")
 
 @login_required
+def transaction_reverse(request, pk):
+    original = Transaction.objects.get(pk=pk, wallet__user=request.user)
+
+    reverse_type = TransactionType.objects.get(
+        name='retiro' if original.transaction_type.name == 'deposito' else 'deposito'
+    )
+
+    Transaction.objects.create(
+        wallet=original.wallet,
+        transaction_type=reverse_type,
+        amount=original.amount,
+        description=f"Reversa de transacción #{original.id}"
+    )
+
+    return redirect('transaction_list')
+
+@login_required
 def user_update(request, pk):
     user = User.objects.get(pk=pk)
 

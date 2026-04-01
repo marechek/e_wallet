@@ -51,7 +51,57 @@
                 }
             });
         }
+    });
 
+    const modal = document.getElementById("modal");
+    const modalText = document.getElementById("modal-text");
+    const reverseBtn = document.getElementById("reverse-btn");
+
+    document.querySelectorAll(".open-modal").forEach(btn => {
+        btn.addEventListener("click", function () {
+
+            const id = this.dataset.id;
+            const type = this.dataset.type;
+
+            const reverseType = type === "deposito" ? "retiro" : "depósito";
+
+            modalText.innerHTML = `
+                No es posible eliminar transacciones.<br><br>
+                Puedes generar una transacción de <strong>${reverseType}</strong>
+                por el mismo monto para revertir este movimiento.
+            `;
+
+            reverseBtn.href = `/transactions/${id}/reverse/`;
+
+            modal.style.display = "flex";
+
+            // 🔒 BLOQUEAR SCROLL
+            document.body.style.overflow = "hidden";
+
+            // 🎯 FOCO AL BOTÓN PRINCIPAL
+            reverseBtn.focus();
+        });
+    });
+
+    function closeModal() {
+        modal.style.display = "none";
+
+        // 🔓 RESTAURAR SCROLL
+        document.body.style.overflow = "auto";
+    }
+
+    // 🚫 EVITAR CLIC FUERA DEL MODAL
+    modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+            // no hacer nada → bloquea cierre externo
+        }
+    });
+
+    // ⌨️ ESC opcional (puedes dejarlo o no)
+    document.addEventListener("keydown", function(e){
+        if (e.key === "Escape" && modal.style.display === "flex") {
+            closeModal();
+        }
     });
     </script>
 </body>

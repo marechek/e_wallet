@@ -109,9 +109,12 @@
                         Ver
                     </a>
 
-                    <a class="btn btn-danger btn-sm" href="{% url 'transaction_delete' tx.id %}">
+                    <button 
+                        class="btn btn-danger btn-sm open-modal"
+                        data-id="{{ tx.id }}"
+                        data-type="{{ tx.transaction_type.name }}">
                         Eliminar
-                    </a>
+                    </button>
                 </td>
             </tr>
             {% empty %}
@@ -142,4 +145,28 @@
     </table>
 </div>
 
+<div id="modal" class="modal-overlay">
+
+    <div class="modal-card">
+
+        <h3>
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            Acción no permitida
+        </h3>
+
+        <p id="modal-text"></p>
+
+        <div class="form-actions">
+            <button class="btn btn-danger" onclick="closeModal()">
+                Cancelar
+            </button>
+
+            <a id="reverse-btn" class="btn btn-primary">
+                Revertir transacción
+            </a>
+        </div>
+
+    </div>
+
+</div>
 {% endblock %}

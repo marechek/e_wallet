@@ -337,7 +337,7 @@ input, select {
 
     /* Imagen + gradiente fusionados */
     background:
-        linear-gradient(135deg, rgba(11, 41, 214, 0.735) , rgba(0,230,118,0.8)),
+        linear-gradient(135deg, rgba(11, 41, 214, 0.469) , rgba(0, 230, 119, 0.954)),
         url("/static/wallet/img/e_wallet_login.png");
 
     background-size: cover;
@@ -424,3 +424,61 @@ input:focus, select:focus {
         transform: translateY(0);
     }
 }
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* ===== MODAL OVERLAY ===== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55); /* oscuro elegante */
+    backdrop-filter: blur(4px);
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+/* ===== MODAL CARD ===== */
+.modal-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    max-width: 420px;
+    width: 90%;
+
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+
+    animation: modalFade 0.25s ease;
+}
+
+/* animación */
+@keyframes modalFade {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
