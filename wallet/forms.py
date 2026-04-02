@@ -16,6 +16,10 @@ class TransactionForm(forms.ModelForm):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
+        if self.instance and self.instance.pk:
+            self.fields['amount'].disabled = True
+            self.fields['transaction_type'].disabled = True
+
     def clean(self):
         cleaned_data = super().clean()
 

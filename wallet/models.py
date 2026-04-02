@@ -14,11 +14,17 @@ class Wallet(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Wallet de {self.user.username} - Saldo: {self.balance}"
+        return f"Wallet de {self.user.username}" # - Saldo: {self.balance}"
 
 
 class TransactionType(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    TYPE_CHOICES = (
+        ('deposit', 'Depósito'),
+        ('withdraw', 'Retiro'),
+    )
+
+    code = models.CharField(max_length=20, choices=TYPE_CHOICES, unique=True)
+    name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
 
     def __str__(self):
@@ -39,19 +45,19 @@ class Transaction(models.Model):
         if not self.wallet_id:
             return
 
-        if self.transaction_type.name.lower() == 'retiro':
+        if self.transaction_type.code == 'withdraw':
             from .models import Transaction
 
             total_depositos = Transaction.objects.filter(
                 wallet=self.wallet,
-                transaction_type__name='deposito'
+                transaction_type__code='deposit'
             ).aggregate(
                 total=Coalesce(Sum('amount'), Decimal('0.00'))
             )['total']
 
             total_retiros = Transaction.objects.filter(
                 wallet=self.wallet,
-                transaction_type__name='retiro'
+                transaction_type__code='withdraw'
             ).aggregate(
                 total=Coalesce(Sum('amount'), Decimal('0.00'))
             )['total']

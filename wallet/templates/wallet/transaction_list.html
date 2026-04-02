@@ -3,8 +3,6 @@
 
 {% block content %}
 
-<h1>Transacciones</h1>
-
 <div class="card">
     <a class="btn btn-primary" href="{% url 'transaction_create' %}">+ Nueva Transacción</a>
 </div>
@@ -96,10 +94,12 @@
                 <td>{{ tx.timestamp }}</td>
 
                 <td>
-                    {% if tx.transaction_type.name == "deposito" %}
+                    {% if tx.transaction_type.code == "deposit" %}
                         <span class="badge badge-success">Depósito</span>
-                    {% else %}
+                    {% elif tx.transaction_type.code == "withdraw" %}
                         <span class="badge badge-danger">Retiro</span>
+                    {% else %}
+                        <span class="badge">Otro</span>
                     {% endif %}
                 </td>
 
@@ -109,7 +109,9 @@
                     <a class="btn btn-primary btn-sm" href="{% url 'transaction_detail' tx.id %}">
                         Ver
                     </a>
-
+                    <a class="btn btn-secondary btn-sm" href="{% url 'transaction_update' tx.id %}">
+                        Editar
+                    </a>
                     <button 
                         class="btn btn-danger btn-sm open-modal"
                         data-id="{{ tx.id }}"

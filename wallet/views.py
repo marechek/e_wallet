@@ -3,12 +3,15 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.db.models import Q, Sum
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
 from .forms import TransactionForm, UserForm, WalletForm, RegisterForm, TransactionTypeForm
 from .models import Transaction, Wallet, TransactionType
 from .services import WalletInactiveError
 from .decorators import wallet_required_active
+
+def home(request):
+    return redirect('login')
 
 @login_required
 @wallet_required_active
@@ -116,7 +119,28 @@ def transaction_detail(request, pk):
 
 @login_required
 def transaction_update(request, pk):
-    return HttpResponseForbidden("Las transacciones no pueden ser editadas.")
+    transaction = Transaction.objects.get(pk=pk, wallet__user=request.user)
+
+    if request.method == 'POST':
+        form = TransactionForm(request.POST, instance=transaction)
+
+        if form.is_valid():
+            updated = form.save(commit=False)
+
+            # 🔒 Bloqueo de campos críticos
+            updated.amount = transaction.amount
+            updated.transaction_type = transaction.transaction_type
+
+            updated.save()
+            return redirect('transaction_detail', pk=transaction.pk)
+
+    else:
+        form = TransactionForm(instance=transaction)
+
+    return render(request, 'wallet/transaction_form.html', {
+        'form': form,
+        'is_update': True
+    })
 
 @login_required
 def transaction_delete(request, pk):

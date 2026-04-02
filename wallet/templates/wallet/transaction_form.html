@@ -4,7 +4,13 @@
 {% block content %}
 
 <div class="card">
-    <h2><i class="fa-solid fa-plus"></i> Nueva Transacción</h2>
+    <h2>
+        {% if is_update %}
+            <i class="fa-solid fa-pen"></i> Editar Transacción
+        {% else %}
+            <i class="fa-solid fa-plus"></i> Nueva Transacción
+        {% endif %}
+    </h2>
 
     {% if not request.user.wallet.is_active %}
         <div class="alert">
