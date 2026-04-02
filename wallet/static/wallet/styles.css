@@ -506,3 +506,291 @@ input:focus, select:focus {
     color: #f59e0b;
 }
 
+/* ===== DROPDOWN NAVBAR ===== */
+
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    font-weight: 500;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 8px 0;
+    min-width: 220px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dropdown-menu a:hover {
+    background: #f5f5f5;
+}
+
+/* Estado activo */
+.dropdown.open .dropdown-menu {
+    display: block;
+}
+
+/* ===== LAYOUT HELPERS ===== */
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ===== TABLE ===== */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: #f4f6f9;
+}
+
+.table th {
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    color: #333;
+}
+
+.table td {
+    padding: 12px;
+    border-top: 1px solid #eee;
+}
+
+.table tr:hover {
+    background: #fafafa;
+}
+
+/* ===== ALIGN ===== */
+
+.text-right {
+    text-align: right;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+/* ===== BOTONES ===== */
+
+.btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 13px;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #333;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+/* ===== EMPTY STATE ===== */
+
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+}
+
+.table th:last-child,
+.table td:last-child {
+    width: 180px;
+}
+
+/* ===== FORM ===== */
+
+.form-container {
+    max-width: 800px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* INPUTS */
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #fff;
+}
+
+/* TEXTAREA ESPECÍFICO */
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* FOCUS */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+/* ACTIONS */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.card-body {
+    padding: 25px 30px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card-header h2 {
+    margin: 0;
+    text-align: center;
+    flex: 1;
+}
+
+/* ===== DROPDOWN PRO ===== */
+
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: white;
+    font-weight: 500;
+}
+
+.dropdown-arrow {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+/* ROTACIÓN */
+.dropdown.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* MENU */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 130%;
+    right: 0;
+    width: 240px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+/* SHOW */
+.dropdown.open .dropdown-menu {
+    display: block;
+}
+
+/* SECCIONES */
+.dropdown-section {
+    padding: 5px 0;
+}
+
+.dropdown-title {
+    display: block;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #999;
+    text-transform: uppercase;
+}
+
+/* ITEMS */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item i {
+    width: 16px;
+    text-align: center;
+}
+
+/* HOVER */
+.dropdown-item:hover {
+    background: #f5f7fb;
+}
+
+/* DIVIDER */
+.dropdown-divider {
+    height: 1px;
+    background: #eee;
+    margin: 6px 0;
+}

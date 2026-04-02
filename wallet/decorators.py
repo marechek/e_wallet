@@ -9,9 +9,11 @@ def wallet_required_active(view_func):
         wallet = request.user.wallet
 
         if not wallet.is_active:
-            return render(request, 'wallet/transaction_form.html', {
-                'form': TransactionForm(),
-                'wallet_inactive': True
+            return render(request, 'wallet/transaction_list.html', {
+                'wallet_inactive': True,
+                'transactions': wallet.transactions.all(),
+                'wallet': wallet,
+                'form': TransactionForm()  # opcional, por compatibilidad
             })
 
         return view_func(request, *args, **kwargs)

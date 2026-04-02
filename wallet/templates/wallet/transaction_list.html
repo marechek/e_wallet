@@ -7,14 +7,6 @@
 
 <div class="card">
     <a class="btn btn-primary" href="{% url 'transaction_create' %}">+ Nueva Transacción</a>
-
-    {% if wallet %}
-        <a class="btn btn-success" href="{% url 'wallet_update' wallet.id %}">Wallet</a>
-    {% endif %}
-
-    {% if user %}
-        <a class="btn btn-success" href="{% url 'user_update' user.id %}">Usuario</a>
-    {% endif %}
 </div>
 
 <div class="hero">
@@ -154,28 +146,5 @@
     </table>
 </div>
 
-<div id="modal" class="modal-overlay">
 
-    <div class="modal-card">
-
-        <h3>
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            Acción no permitida
-        </h3>
-
-        <p id="modal-text"></p>
-
-        <div class="form-actions">
-            <button class="btn btn-danger" onclick="closeModal()">
-                Cancelar
-            </button>
-
-            <a id="reverse-btn" class="btn btn-primary">
-                Revertir transacción
-            </a>
-        </div>
-
-    </div>
-
-</div>
 {% endblock %}

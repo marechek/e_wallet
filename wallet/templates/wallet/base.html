@@ -11,22 +11,72 @@
 <body>
 
     <div class="navbar">
-        <div><strong>E-Wallet</strong></div>
         <div>
-            {% if user.is_authenticated %}
-                <span><i class="fa-solid fa-user"></i> 
-                    {{ request.user.get_full_name_display }}</span>
+            <strong>E-Wallet</strong>
+        </div>
 
+        <div style="display:flex; align-items:center; gap:15px;">
+
+            {% if user.is_authenticated %}
+
+                <!-- CONFIGURACIÓN -->
+                <div class="dropdown" id="configDropdown">
+                    <div class="dropdown-toggle">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Configuración</span>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+
+                    <div class="dropdown-menu">
+
+                        <div class="dropdown-section">
+                            <span class="dropdown-title">General</span>
+
+                            <a href="{% url 'transaction_type_list' %}" class="dropdown-item">
+                                <i class="fa-solid fa-list"></i>
+                                Tipos de Transacción
+                            </a>
+                        </div>
+
+                        <div class="dropdown-divider"></div>
+
+                        <div class="dropdown-section">
+                            <span class="dropdown-title">Cuenta</span>
+
+                            <a href="{% url 'wallet_update' request.user.wallet.id %}" class="dropdown-item">
+                                <i class="fa-solid fa-wallet"></i>
+                                Wallet
+                            </a>
+
+                            <a href="{% url 'user_update' request.user.id %}" class="dropdown-item">
+                                <i class="fa-solid fa-user"></i>
+                                Usuario
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- USUARIO -->
+                <span>
+                    <i class="fa-solid fa-user"></i> 
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </span>
+
+                <!-- LOGOUT -->
                 <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <button class="btn btn-danger" type="submit">
                         <i class="fa-solid fa-right-from-bracket"></i> Salir
                     </button>
                 </form>
+
             {% else %}
+
                 <a class="btn btn-primary" href="{% url 'login' %}">
                     <i class="fa-solid fa-right-to-bracket"></i> Login
                 </a>
+
             {% endif %}
         </div>
     </div>
@@ -36,11 +86,26 @@
         {% endblock %}
     </div>
 
+    {% block scripts %}
     <script>
     document.addEventListener("DOMContentLoaded", function () {
 
         const checkbox = document.querySelector(".switch input");
         const statusText = document.getElementById("wallet-status-text");
+        const menu = document.querySelector('.dropdown-menu');
+        
+        const dropdown = document.getElementById('configDropdown');
+
+        if (dropdown) {
+            dropdown.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('open');
+            });
+
+            document.addEventListener('click', function () {
+                dropdown.classList.remove('open');
+            });
+        }
 
         if (checkbox && statusText) {
             checkbox.addEventListener("change", function () {
@@ -82,28 +147,75 @@
             reverseBtn.focus();
         });
     });
+    document.addEventListener("keydown", function(e){
 
+        const globalModal = document.getElementById('global-modal');
+        const legacyModal = document.getElementById('modal');
+
+        if (e.key === "Escape") {
+
+            if (globalModal && globalModal.classList.contains('active')) {
+                closeModal();
+            }
+
+            if (legacyModal && legacyModal.style.display === 'flex') {
+                closeModal();
+            }
+        }
+    });
     function closeModal() {
-        modal.style.display = "none";
+
+        // 🔹 Modal nuevo (global)
+        const globalModal = document.getElementById('global-modal');
+        if (globalModal && globalModal.classList.contains('active')) {
+            globalModal.classList.remove('active');
+        }
+
+        // 🔹 Modal antiguo (legacy)
+        const legacyModal = document.getElementById('modal');
+        if (legacyModal && legacyModal.style.display === 'flex') {
+            legacyModal.style.display = 'none';
+        }
 
         // 🔓 RESTAURAR SCROLL
         document.body.style.overflow = "auto";
     }
-
-    // 🚫 EVITAR CLIC FUERA DEL MODAL
-    modal.addEventListener("click", function (e) {
-        if (e.target === modal) {
-            // no hacer nada → bloquea cierre externo
-        }
-    });
-
-    // ⌨️ ESC opcional (puedes dejarlo o no)
-    document.addEventListener("keydown", function(e){
-        if (e.key === "Escape" && modal.style.display === "flex") {
-            closeModal();
-        }
-    });
     </script>
-    {% block scripts %}{% endblock %}
+    {% endblock %}
+
+    {% if modal_error or wallet_inactive or form.errors %}
+    <div id="global-modal" class="modal-overlay active">
+        <div class="modal-card">
+
+            <h3>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Atención
+            </h3>
+
+            {% if wallet_inactive %}
+                <p>Tu billetera está desactivada. No puedes realizar operaciones.</p>
+
+            {% elif modal_error %}
+                <p>{{ modal_message }}</p>
+
+            {% elif form.errors %}
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            <div class="form-actions">
+                <button class="btn btn-primary" onclick="closeModal()">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
 </body>
 </html>

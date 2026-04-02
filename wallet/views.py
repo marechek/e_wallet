@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
-from .forms import TransactionForm, UserForm, WalletForm
-from .models import Transaction, Wallet, TransactionType
 from django.contrib.auth.models import User
 from django.db.models import Q, Sum
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm
 from django.contrib.auth import login
 from django.core.exceptions import ValidationError
+from .forms import TransactionForm, UserForm, WalletForm, RegisterForm, TransactionTypeForm
+from .models import Transaction, Wallet, TransactionType
 from .services import WalletInactiveError
 from .decorators import wallet_required_active
 
@@ -125,7 +124,7 @@ def transaction_delete(request, pk):
 
 @login_required
 @wallet_required_active
-def transaction_reverse(request):
+def transaction_reverse(request, pk):
     original = Transaction.objects.get(pk=pk, wallet__user=request.user)
 
     reverse_type = TransactionType.objects.get(
@@ -180,10 +179,22 @@ def transaction_type_delete(request, pk):
     type_obj = TransactionType.objects.get(pk=pk)
 
     if request.method == 'POST':
-        type_obj.delete()
-        return redirect('transaction_type_list')
+        try:
+            type_obj.delete()
+            return redirect('transaction_type_list')
 
-    return render(request, 'wallet/transaction_type_confirm_delete.html', {'type': type_obj})
+        except Exception:
+            types = TransactionType.objects.all()
+
+            return render(request, 'wallet/transaction_type_list.html', {
+                'types': types,
+                'modal_error': True,
+                'modal_message': 'No se puede eliminar este tipo porque tiene transacciones asociadas.'
+            })
+
+    return render(request, 'wallet/transaction_type_confirm_delete.html', {
+        'type': type_obj
+    })
 
 @login_required
 def user_update(request, pk):

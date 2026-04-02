@@ -1,13 +1,73 @@
-<h2>Tipos de Transacción</h2>
+{% extends 'wallet/base.html' %}
 
-<a href="{% url 'transaction_type_create' %}">Crear</a>
+{% block content %}
 
-<ul>
-  {% for t in types %}
-    <li>
-      {{ t.name }}
-      <a href="{% url 'transaction_type_update' t.id %}">Editar</a>
-      <a href="{% url 'transaction_type_delete' t.id %}">Eliminar</a>
-    </li>
-  {% endfor %}
-</ul>
+<div class="card">
+
+    <!-- HEADER -->
+    <div class="card-header flex-between">
+
+        <!-- IZQUIERDA: VOLVER -->
+        <a href="{% url 'transaction_list' %}" class="btn btn-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+        </a>
+
+        <!-- CENTRO -->
+        <h2>Tipos de Transacción</h2>
+
+        <!-- DERECHA -->
+        <a href="{% url 'transaction_type_create' %}" class="btn btn-primary">
+            + Nuevo Tipo
+        </a>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card-body">
+
+        {% if types %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th class="text-right">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for t in types %}
+                <tr>
+                    <td class="text-capitalize">{{ t.name }}</td>
+
+                    <td>
+                        {{ t.description|default:"—" }}
+                    </td>
+
+                    <td class="text-right">
+                        <a href="{% url 'transaction_type_update' t.id %}" class="btn btn-sm btn-secondary">
+                            Editar
+                        </a>
+
+                        <form method="post" action="{% url 'transaction_type_delete' t.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+            <div class="empty-state">
+                No hay tipos registrados.
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
