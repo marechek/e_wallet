@@ -329,17 +329,13 @@ http://127.0.0.1:8000/
 Se han creado dos usuarios predeterminados para facilitar las pruebas:
 
 1. **Usuario 1**:
-   - Usuario: `user1`
-   - Contraseña: `password123`
-
-2. **Usuario 2**:
-   - Usuario: `user2`
-   - Contraseña: `password123`
+   - Usuario: `nelsonlopez`
+   - Contraseña: `12345678!`
 
 ### 🔑 Credenciales de administrador
 
-- Usuario: `admin`
-- Contraseña: `admin123`
+- Usuario: `marcoselias`
+- Contraseña: `Admin1234!`
 
 ---
 
@@ -435,7 +431,24 @@ Este proyecto no solo cumple con los objetivos académicos del módulo, sino que
 
 ---
 
-## 👥 Autores
+## 🔧 Mejoras futuras
+
+El proyecto cumple con los requerimientos del módulo, sin embargo, existen oportunidades de mejora orientadas a robustecer la aplicación y acercarla a un entorno productivo:
+
+- 🕒 **Gestión de zona horaria**: Ajustar el manejo de fechas y horas para reflejar correctamente la hora local del usuario.
+- 💱 **Soporte multi-moneda**: Incorporar manejo de distintas monedas y tipos de cambio.
+- 📊 **Dashboard avanzado**: Agregar visualizaciones y métricas (gráficos, tendencias, etc.).
+- 🔐 **Mejoras de seguridad**: Fortalecer validaciones, manejo de sesiones y protección ante accesos indebidos.
+- ⚙️ **Optimización de lógica de negocio**: Centralizar completamente reglas en la capa de servicios (`services.py`).
+- 🧪 **Testing automatizado**: Incorporar pruebas unitarias y de integración.
+- 🎨 **Mejoras de UX/UI**: Refinar experiencia de usuario, feedback visual y accesibilidad.
+- 🚀 **Despliegue en producción**: Configuración para entornos productivos (PostgreSQL, variables de entorno, hosting).
+
+Estas mejoras no afectan el cumplimiento de la pauta, pero representan pasos naturales para evolucionar la aplicación hacia un sistema más completo y escalable.
+
+---
+
+## 👥 Autor
 
 - Marcos Elias - Desarrollador
 
