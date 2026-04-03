@@ -90,10 +90,7 @@
     <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const checkbox = document.querySelector(".switch input");
-        const statusText = document.getElementById("wallet-status-text");
-        const menu = document.querySelector('.dropdown-menu');
-        
+        // ===== DROPDOWN =====
         const dropdown = document.getElementById('configDropdown');
 
         if (dropdown) {
@@ -107,77 +104,72 @@
             });
         }
 
+        // ===== WALLET SWITCH =====
+        const checkbox = document.querySelector(".switch input");
+        const statusText = document.getElementById("wallet-status-text");
+
         if (checkbox && statusText) {
             checkbox.addEventListener("change", function () {
-                if (checkbox.checked) {
-                    statusText.textContent = "🟢 Activa";
-                } else {
-                    statusText.textContent = "🔴 Inactiva";
-                }
+                statusText.textContent = checkbox.checked ? "🟢 Activa" : "🔴 Inactiva";
             });
         }
-    });
 
-    const modal = document.getElementById("modal");
-    const modalText = document.getElementById("modal-text");
-    const reverseBtn = document.getElementById("reverse-btn");
+        // ===== MODAL TRANSACCIONES =====
+        document.querySelectorAll(".open-modal").forEach(btn => {
+            btn.addEventListener("click", function () {
 
-    document.querySelectorAll(".open-modal").forEach(btn => {
-        btn.addEventListener("click", function () {
+                const modal = document.getElementById("modal");
+                const modalText = document.getElementById("modal-text");
+                const reverseBtn = document.getElementById("reverse-btn");
 
-            const id = this.dataset.id;
-            const type = this.dataset.type;
+                // 🔒 Protección (clave)
+                if (!modal || !modalText || !reverseBtn) {
+                    console.error("Modal no encontrado en el DOM");
+                    return;
+                }
 
-            const reverseType = type === "deposito" ? "retiro" : "depósito";
+                const id = this.dataset.id;
+                const type = this.dataset.type;
 
-            modalText.innerHTML = `
-                No es posible eliminar transacciones.<br><br>
-                Puedes generar una transacción de <strong>${reverseType}</strong>
-                por el mismo monto para revertir este movimiento.
-            `;
+                // 🔥 FIX IMPORTANTE (code en vez de name)
+                const reverseType = type === "deposit" ? "retiro" : "depósito";
 
-            reverseBtn.href = `/transactions/${id}/reverse/`;
+                modalText.innerHTML = `
+                    No es posible eliminar transacciones.<br><br>
+                    Puedes generar una transacción de <strong>${reverseType}</strong>
+                    por el mismo monto para revertir este movimiento.
+                `;
 
-            modal.style.display = "flex";
+                reverseBtn.href = `/transactions/${id}/reverse/`;
 
-            // 🔒 BLOQUEAR SCROLL
-            document.body.style.overflow = "hidden";
-
-            // 🎯 FOCO AL BOTÓN PRINCIPAL
-            reverseBtn.focus();
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+                reverseBtn.focus();
+            });
         });
+
     });
+
+    // ===== ESCAPE =====
     document.addEventListener("keydown", function(e){
 
         const globalModal = document.getElementById('global-modal');
         const legacyModal = document.getElementById('modal');
 
         if (e.key === "Escape") {
-
-            if (globalModal && globalModal.classList.contains('active')) {
-                closeModal();
-            }
-
-            if (legacyModal && legacyModal.style.display === 'flex') {
-                closeModal();
-            }
+            if (globalModal && globalModal.classList.contains('active')) closeModal();
+            if (legacyModal && legacyModal.style.display === 'flex') closeModal();
         }
     });
+
+    // ===== CLOSE =====
     function closeModal() {
-
-        // 🔹 Modal nuevo (global)
         const globalModal = document.getElementById('global-modal');
-        if (globalModal && globalModal.classList.contains('active')) {
-            globalModal.classList.remove('active');
-        }
+        if (globalModal) globalModal.classList.remove('active');
 
-        // 🔹 Modal antiguo (legacy)
         const legacyModal = document.getElementById('modal');
-        if (legacyModal && legacyModal.style.display === 'flex') {
-            legacyModal.style.display = 'none';
-        }
+        if (legacyModal) legacyModal.classList.remove('active');
 
-        // 🔓 RESTAURAR SCROLL
         document.body.style.overflow = "auto";
     }
     </script>
@@ -217,5 +209,20 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- 🔴 MODAL LEGACY (NECESARIO PARA REVERSA) -->
+    <div id="modal" class="modal-overlay-legacy">
+
+        <div class="modal-card-legacy">
+
+            <p id="modal-text"></p>
+
+            <div class="modal-actions">
+                <a id="reverse-btn" class="btn btn-primary">Revertir</a>
+                <button onclick="closeModal()" class="btn btn-danger">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
