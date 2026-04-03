@@ -351,6 +351,10 @@ A continuación se presentan capturas de pantalla que evidencian el funcionamien
 
 ![Ejecución del servidor](wallet/static/wallet/img/Ejecucion_servidor.png)
 
+### 🔑 Login
+
+![Login](wallet/static/wallet/img/Login.png)
+
 ### 🌐 Interfaz de la aplicación
 
 ![Pantalla principal](wallet/static/wallet/img/Pantalla_principal.png)
