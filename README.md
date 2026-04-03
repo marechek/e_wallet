@@ -353,23 +353,37 @@ A continuación se presentan capturas de pantalla que evidencian el funcionamien
 
 ### 🌐 Interfaz de la aplicación
 
-(Insertar captura de la pantalla principal del sistema)
+![Pantalla principal](wallet/static/wallet/img/Pantalla_principal.png)
 
 ### ➕ Creación de transacción
 
-(Formulario de creación funcionando)
+![Creación de transacción](wallet/static/wallet/img/Nueva_transaccion.png)
 
 ### 🔍 Listado y filtros
 
-(Vista con transacciones y filtros aplicados)
+![Listado y filtros](wallet/static/wallet/img/Listado_filtro_todos.png)
+
+![Filtro de depósitos](wallet/static/wallet/img/Filtro_depositos.png)
+
+![Filtro de retiros](wallet/static/wallet/img/Filtro_retiros.png)
+
+![Filtro por monto](wallet/static/wallet/img/Filtro_monto.png)
+
+![Filtro por descripción](wallet/static/wallet/img/Filtro_descripcion.png)
 
 ### ✏️ Edición de transacción
 
-(Formulario en modo edición)
+![Edición de transacción](wallet/static/wallet/img/Editar_transaccion.png)
+
+![Edición de transacción](wallet/static/wallet/img/Editar_transaccion_confirmacion.png)
 
 ### 🗑️ Eliminación de tipo de transacción
 
-(Confirmación o bloqueo por PROTECT)
+![Eliminación de tipo de transacción](wallet/static/wallet/img/Eliminar_tipo_transaccion_1.png)
+
+![Eliminación de tipo de transacción](wallet/static/wallet/img/Eliminar_tipo_transaccion_2.png)
+
+![Eliminación de tipo de transacción](wallet/static/wallet/img/Eliminar_tipo_transaccion_3.png)
 
 ## 🧾 Conclusión
 
