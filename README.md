@@ -326,7 +326,7 @@ http://127.0.0.1:8000/
 
 ### 👤 Usuarios de prueba
 
-Se han creado dos usuarios predeterminados para facilitar las pruebas:
+Se ha creado un usuario predeterminado para facilitar las pruebas:
 
 1. **Usuario 1**:
    - Usuario: `nelsonlopez`
