@@ -349,7 +349,7 @@ A continuación se presentan capturas de pantalla que evidencian el funcionamien
 
 ### 🖥️ Ejecución del servidor
 
-(Insertar captura del terminal ejecutando runserver)
+![Ejecución del servidor](wallet/static/wallet/img/Ejecucion_servidor.png)
 
 ### 🌐 Interfaz de la aplicación
 
